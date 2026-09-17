@@ -22,7 +22,6 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
     <!-- Подтверждение прав в Яндекс.Вебмастере -->
     <meta name="yandex-verification" content="ccc84abbe1918840" />
 
-    <!-- Open Graph — для превью в мессенджерах и соцсетях -->
     <meta property="og:type" content="article" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
@@ -31,11 +30,27 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
 
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="sitemap" href="/sitemap-index.xml" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
   </head>
   <body>
     <header class="site-header">
-      <a href="/" class="logo">chinim-internet</a>
-      <span class="tagline">Разбираемся, почему не работает — и что сделать</span>
+      <div class="inner">
+        <a href="/" class="brand">
+          <span class="brand-mark" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none">
+              <path d="M4 15.5l4-4 3.5 3.5L20 6.5" stroke="currentColor"
+                stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </span>
+          chinim-internet
+        </a>
+      </div>
     </header>
 
     <main>
@@ -43,7 +58,9 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
     </main>
 
     <footer class="site-footer">
-      <p>© {new Date().getFullYear()} chinim-internet.online — информационный проект о доступе в интернет.</p>
+      <div class="inner">
+        © {new Date().getFullYear()} chinim-internet.online — информационный проект о доступе в интернет.
+      </div>
     </footer>
   </body>
 </html>
