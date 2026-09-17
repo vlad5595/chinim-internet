@@ -2,7 +2,6 @@
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 
-// Берём все не-черновые статьи, свежие сверху.
 const articles = (await getCollection('articles', ({ data }) => !data.draft))
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 ---
@@ -11,7 +10,12 @@ const articles = (await getCollection('articles', ({ data }) => !data.draft))
   title="chinim-internet — почему не работает и как исправить"
   description="Простые разборы частых проблем с доступом к сайтам и приложениям: почему не открывается, что делать, как настроить."
 >
-  <h1>Свежие разборы</h1>
+  <section class="hero">
+    <h1>Что-то не открывается? Спокойно, разберёмся.</h1>
+    <p>Простые разборы, почему сайты и приложения тормозят или не работают — и что можно сделать за пару минут.</p>
+  </section>
+
+  <div class="list-label">Свежие разборы</div>
 
   {articles.length === 0 && (
     <p class="empty">Статей пока нет. Скоро здесь появятся первые разборы.</p>
@@ -20,15 +24,16 @@ const articles = (await getCollection('articles', ({ data }) => !data.draft))
   <ul class="article-list">
     {articles.map((article) => (
       <li>
-        <a href={`/${article.id}/`}>
-          <span class="article-title">{article.data.title}</span>
-          <span class="article-desc">{article.data.description}</span>
-          <span class="article-date">
-            {article.data.pubDate.toLocaleDateString('ru-RU', {
-              day: 'numeric',
-              month: 'long',
-              year: 'numeric',
-            })}
+        <a class="card" href={`/${article.id}/`}>
+          <span class="card-dot" aria-hidden="true"></span>
+          <span class="card-body">
+            <span class="card-title">{article.data.title}</span>
+            <span class="card-desc">{article.data.description}</span>
+            <span class="card-date">
+              {article.data.pubDate.toLocaleDateString('ru-RU', {
+                day: 'numeric', month: 'long', year: 'numeric',
+              })}
+            </span>
           </span>
         </a>
       </li>
