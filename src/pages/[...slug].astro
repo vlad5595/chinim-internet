@@ -2,7 +2,8 @@
 import { getCollection, render } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 
-// Генерируем страницу под каждую статью. slug = имя файла.
+const REF_LINK = 'https://t.me/kivi_vpn_bot?start=448587092';
+
 export async function getStaticPaths() {
   const articles = await getCollection('articles', ({ data }) => !data.draft);
   return articles.map((article) => ({
@@ -16,19 +17,35 @@ const { Content } = await render(article);
 ---
 
 <BaseLayout title={article.data.title} description={article.data.description}>
-  <article class="post">
-    <h1>{article.data.title}</h1>
-    <time datetime={article.data.pubDate.toISOString()} class="post-date">
-      {article.data.pubDate.toLocaleDateString('ru-RU', {
-        day: 'numeric',
-        month: 'long',
-        year: 'numeric',
-      })}
-    </time>
+  <article>
+    <div class="post-head">
+      <h1>{article.data.title}</h1>
+      <time datetime={article.data.pubDate.toISOString()} class="post-date">
+        {article.data.pubDate.toLocaleDateString('ru-RU', {
+          day: 'numeric', month: 'long', year: 'numeric',
+        })}
+      </time>
+    </div>
 
     <div class="post-body">
       <Content />
     </div>
+
+    <aside class="cta-card">
+      <p class="cta-title">Нужен стабильный доступ?</p>
+      <p class="cta-text">
+        Если проблема повторяется на разных серверах, дело может быть в самом VPN:
+        бесплатные часто перегружены и не тянут видео. KIVI подключается за пару минут
+        прямо в Telegram.
+      </p>
+      <a class="cta-btn" href={REF_LINK}>
+        Открыть KIVI VPN
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor"
+            stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+      </a>
+    </aside>
 
     <p class="back"><a href="/">← Все разборы</a></p>
   </article>
