@@ -31,7 +31,7 @@ ARTICLES_DIR = os.environ.get("ARTICLES_DIR", "src/content/articles")
 
 # --- DeepSeek ---
 API_URL = "https://api.deepseek.com/chat/completions"
-MODEL = os.environ.get("DEEPSEEK_MODEL", "deepseek-v4-flash")
+MODEL = os.environ.get("DEEPSEEK_MODEL", "deepseek-flash")
 API_KEY = os.environ.get("DEEPSEEK_API_KEY", "")
 
 # --- Проект ---
