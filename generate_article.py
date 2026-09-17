@@ -22,6 +22,7 @@ import json
 import os
 import ssl
 import sys
+import urllib.error
 import urllib.request
 
 # --- Пути (можно переопределить через окружение — удобно для тестов) ---
@@ -105,7 +106,7 @@ def call_deepseek(messages):
         "model": MODEL,
         "messages": messages,
         "response_format": {"type": "json_object"},
-        "reasoning_effort": "none",   # отключаем thinking — для шаблонных статей не нужен
+        "thinking": {"type": "disabled"},   # отключаем режим размышления (V4-синтаксис)
         "temperature": 0.6,
         "max_tokens": 4000,
     }).encode("utf-8")
@@ -117,8 +118,13 @@ def call_deepseek(messages):
             "Content-Type": "application/json",
         },
     )
-    with urllib.request.urlopen(req, timeout=120, context=SSL_CTX) as resp:
-        data = json.loads(resp.read().decode("utf-8"))
+    try:
+        with urllib.request.urlopen(req, timeout=120, context=SSL_CTX) as resp:
+            data = json.loads(resp.read().decode("utf-8"))
+    except urllib.error.HTTPError as e:
+        body = e.read().decode("utf-8", errors="replace")
+        print(f"DeepSeek вернул HTTP {e.code}. Тело ответа:\n{body}", file=sys.stderr)
+        raise
     return data["choices"][0]["message"]["content"]
 
 
