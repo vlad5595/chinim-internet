@@ -19,6 +19,9 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
 
+    <!-- Подтверждение прав в Яндекс.Вебмастере -->
+    <meta name="yandex-verification" content="ccc84abbe1918840" />
+
     <!-- Open Graph — для превью в мессенджерах и соцсетях -->
     <meta property="og:type" content="article" />
     <meta property="og:title" content={title} />
