@@ -150,13 +150,8 @@ def assemble_md(title, description, body, service, slug):
     disp = SERVICE_DISPLAY.get(service, "Общее")
     safe_title = title.replace('"', "'")
     safe_desc = description.replace('"', "'")
-    cta = (
-        "\n\n## Если ничего не помогло\n\n"
-        "Если проблема повторяется на разных серверах, чаще всего дело в самом "
-        "VPN-сервисе: бесплатные часто перегружены и не тянут видео. Для стабильного "
-        f"и быстрого доступа можно воспользоваться сервисом [KIVI VPN]({REF_LINK}) — "
-        "подключение занимает пару минут прямо в Telegram.\n"
-    )
+    # CTA в бот больше НЕ вставляем в текст — его рендерит шаблон страницы
+    # ([...slug].astro) единым красивым блоком для всех статей.
     return (
         f"---\n"
         f'title: "{safe_title}"\n'
@@ -166,7 +161,6 @@ def assemble_md(title, description, body, service, slug):
         f"draft: false\n"
         f"---\n\n"
         f"{body}\n"
-        f"{cta}"
     )
 
 
