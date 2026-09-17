@@ -1,0 +1,45 @@
+name: Публикация статьи
+
+on:
+  schedule:
+    # каждый день в 08:00 UTC = 11:00 по Москве.
+    # GitHub может запускать с задержкой в несколько минут — это нормально.
+    - cron: '0 8 * * *'
+  # позволяет запустить вручную кнопкой (для теста)
+  workflow_dispatch:
+
+# даём воркфлоу право писать в репозиторий (коммитить статью)
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Клонировать репозиторий
+        uses: actions/checkout@v4
+
+      - name: Поставить Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Сгенерировать и опубликовать статью
+        env:
+          DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+          # необязательные — если добавишь секреты, подхватятся автоматически:
+          DEEPSEEK_MODEL: ${{ secrets.DEEPSEEK_MODEL }}
+          INDEXNOW_KEY: ${{ secrets.INDEXNOW_KEY }}
+        run: python generate_article.py
+
+      - name: Закоммитить статью в репозиторий
+        run: |
+          git config user.name "kivi-conveyor"
+          git config user.email "actions@users.noreply.github.com"
+          git add -A
+          if git diff --staged --quiet; then
+            echo "Нет изменений — публиковать нечего."
+          else
+            git commit -m "Автопубликация статьи ($(date +%Y-%m-%d))"
+            git push
+          fi
